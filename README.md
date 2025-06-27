@@ -92,4 +92,4 @@ Contribution
 Contributions are welcome! Please fork the repository and submit a pull request.
 
 Contact
-For any questions or suggestions, please contact [Your Name] at [your.email@example.com]
+For any questions or suggestions, please contact [Your Name] at [jyothibasuboda@gmail.com]
