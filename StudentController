@@ -1,0 +1,73 @@
+// Package declaration
+package com.studentinfo.controller;
+
+// Importing required classes
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import com.studentinfo.entity.StudentEntity;
+import com.studentinfo.service.StudentServiceinf;
+
+// Marks this class as a Spring MVC controller
+@Controller
+// Base URL mapping for all endpoints in this controller
+@RequestMapping("/students")
+public class StudentController {
+
+    // Injecting the service layer to handle business logic
+    @Autowired
+    private StudentServiceinf studentServiceinf;
+
+    // Handles GET requests to "/students/list"
+    // Fetches all student records and passes them to the view
+    @GetMapping("/list")
+    public String allStudent(Model model) {
+        List<StudentEntity> students = studentServiceinf.getAllUser(); // Get list of students
+        model.addAttribute("students", students); // Add the list to the model to be displayed in the view
+        return "display"; // Returns the view name (display.html or display.jsp, depending on config)
+    }
+
+    // Handles GET requests to "/students/add"
+    // Displays the form to add a new student
+    @GetMapping("/add")
+    public String sendForm(Model model) {
+        model.addAttribute("student", new StudentEntity()); // Add an empty student object to bind form data
+        return "register"; // Returns the form view for registration
+    }
+
+    // Handles POST requests to "/students/add"
+    // Saves the new student record to the database
+    @PostMapping("/add")
+    public String addStudent(@ModelAttribute StudentEntity stu) {
+        studentServiceinf.addUser(stu); // Call service to add the student
+        return "redirect:/students/list"; // Redirects to the list page after adding
+    }
+
+    // Handles GET requests to "/students/edit/{id}"
+    // Fetches the student with the given ID and displays the update form
+    @GetMapping("/edit/{id}")
+    public String showUpdateForm(@PathVariable long id, Model model) {
+        StudentEntity student = studentServiceinf.getUserById(id); // Get student by ID
+        model.addAttribute("student", student); // Add student to model for form binding
+        return "update"; // Returns the update form view
+    }
+
+    // Handles POST requests to "/students/update/{id}"
+    // Updates the student record with the given ID
+    @PostMapping("/update/{id}")
+    public String updateStudent(@PathVariable long id, @ModelAttribute StudentEntity student) {
+        studentServiceinf.updateUser(student, id); // Call service to update student
+        return "redirect:/students/list"; // Redirect to list page after updating
+    }
+
+    // Handles GET requests to "/students/delete/{id}"
+    // Deletes the student with the given ID
+    @GetMapping("/delete/{id}")
+    public String deleteStudent(@PathVariable long id) {
+        studentServiceinf.deleteUser(id); // Call service to delete the student
+        return "redirect:/students/list"; // Redirect to list page after deletion
+    }
+}
