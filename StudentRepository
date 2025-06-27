@@ -1,0 +1,21 @@
+// Package declaration
+package com.studentinfo.repository;
+
+// Importing Spring Data JPA's JpaRepository interface
+import org.springframework.data.jpa.repository.JpaRepository;
+
+// Importing the entity class that this repository will manage
+import com.studentinfo.entity.StudentEntity;
+
+// This interface extends JpaRepository to provide CRUD operations and more for StudentEntity
+// JpaRepository<EntityType, IDType> — here, StudentEntity is the entity type, and Long is the ID type
+public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
+    // No need to define any methods here unless custom queries are needed.
+    // Spring Data JPA provides built-in methods like:
+    // - findAll()
+    // - findById()
+    // - save()
+    // - deleteById()
+    // - count()
+    // and many more, just by extending JpaRepository.
+}
