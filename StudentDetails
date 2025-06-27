@@ -1,0 +1,58 @@
+// Package declaration
+package com.studentinfo.service;
+
+// Import necessary classes and interfaces
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.studentinfo.entity.StudentEntity;
+import com.studentinfo.repository.StudentRepository;
+
+// Marks this class as a Spring service component (business logic layer)
+@Service
+public class StudentDetails implements StudentServiceinf {
+
+    // Injecting the StudentRepository to perform database operations
+    @Autowired
+    private StudentRepository studentRepository;
+
+    // Adds a new student to the database
+    @Override
+    public StudentEntity addUser(StudentEntity student) {
+        return studentRepository.save(student); // save() handles both insert and update
+    }
+
+    // Updates an existing student based on ID
+    @Override
+    public StudentEntity updateUser(StudentEntity student, long id) {
+        // Fetch the existing student from the database
+        StudentEntity stu = studentRepository.findById(id).get();
+
+        // Update fields with new values
+        stu.setName(student.getName());
+        stu.setCourse(student.getCourse());
+        stu.setGender(student.getGender());
+
+        // Save the updated student entity
+        return studentRepository.save(stu);
+    }
+
+    // Deletes a student by ID
+    @Override
+    public void deleteUser(long id) {
+        studentRepository.deleteById(id);
+    }
+
+    // Returns a list of all students
+    @Override
+    public List<StudentEntity> getAllUser() {
+        return studentRepository.findAll(); // findAll() returns all records
+    }
+
+    // Retrieves a single student by ID
+    @Override
+    public StudentEntity getUserById(long id) {
+        return studentRepository.findById(id).get(); // findById() returns Optional
+    }
+}
